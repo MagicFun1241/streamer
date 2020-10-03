@@ -16,6 +16,7 @@
     "url": "git+https://github.com/MagicFun1241/streamer.git"
   },
   "keywords": [
+    "rtp",
     "rtmp",
     "streaming"
   ],

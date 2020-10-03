@@ -1,4 +1,4 @@
-import Stream, {StreamOptions} from "./stream";
+import Stream, {StreamOptions} from "./core/stream";
 
 export default class RtmpStream extends Stream {
     constructor(options: StreamOptions) {

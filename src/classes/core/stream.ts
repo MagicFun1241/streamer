@@ -5,11 +5,13 @@ import {ChildProcessWithoutNullStreams, spawn} from "child_process";
 import * as pathToFfmpeg from "ffmpeg-static";
 
 export enum Format {
+    RTP = "rtp",
     FLV = "flv",
     MPEGTS = "mpegts"
 }
 
 export enum Preset {
+    Fast = "fast",
     UltraFast = "ultrafast"
 }
 
