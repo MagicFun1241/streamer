@@ -1,6 +1,6 @@
 {
   "name": "@magicfun1241/streamer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Stream library",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
