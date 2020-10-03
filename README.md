@@ -14,7 +14,7 @@ const stream = new RtmpServer({
 
 stream.start();
 ```
-It's supports ES5 too. Just change import to something like this:
+It's supports **ES5** too. Just change import to something like this:
 ```javascript
 const { RtmpServer } = require("@magicfun1241/streamer");
 ```

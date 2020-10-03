@@ -1,7 +1,7 @@
 {
   "name": "@magicfun1241/streamer",
-  "version": "1.0.3",
-  "description": "Stream library",
+  "version": "1.0.4",
+  "description": "Streaming library",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -16,7 +16,8 @@
     "url": "git+https://github.com/MagicFun1241/streamer.git"
   },
   "keywords": [
-    "rtmp"
+    "rtmp",
+    "streaming"
   ],
   "author": "MagicFun1241",
   "license": "MIT",

@@ -1,7 +1,11 @@
 import RtmpStream from "./classes/rtmpStream";
-import { Format } from "./classes/stream";
+import {
+    Preset,
+    Format
+} from "./classes/stream";
 
 export {
+    Preset,
     Format,
     RtmpStream
 };

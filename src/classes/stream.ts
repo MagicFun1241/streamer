@@ -13,26 +13,32 @@ export enum Preset {
     UltraFast = "ultrafast"
 }
 
-interface Options {
+interface CoreOptions {
     input: string | Array<string>;
     output: string;
+
+    outputProtocol: "rtmp" | "rtp";
 
     key?: string;
     preset?: Preset;
     format?: Format;
 }
 
+export type StreamOptions = Omit<CoreOptions, "outputProtocol">;
+
 function flatMap<T, U>(array: T[], callback: (value: T, index: number, array: T[]) => U[]): U[] {
     return Array.prototype.concat(...array.map(callback));
 }
 
 export default class Stream {
-    private options: Options;
+    private options: CoreOptions;
     private ffmpegProcess: ChildProcessWithoutNullStreams;
 
     protected started = false;
 
-    constructor(options: Options) {
+    constructor(options: CoreOptions) {
+        if (!options.output.startsWith(`${options.outputProtocol}//`)) throw new Error("Invalid output url passed");
+
         if (options.format == null) options.format = Format.FLV;
 
         if (options.preset == null) options.preset = Preset.UltraFast;
