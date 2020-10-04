@@ -1,8 +1,13 @@
+import * as fs from "fs";
+import * as path from "path";
 import * as chalk from "chalk";
 
 import {ChildProcessWithoutNullStreams, spawn} from "child_process";
 
 import * as pathToFfmpeg from "ffmpeg-static";
+import * as tempPath from "temp-dir";
+
+import {nanoid} from "nanoid";
 
 export enum Format {
     RTP = "rtp",
@@ -28,10 +33,6 @@ interface CoreOptions {
 
 export type StreamOptions = Omit<CoreOptions, "outputProtocol">;
 
-function flatMap<T, U>(array: T[], callback: (value: T, index: number, array: T[]) => U[]): U[] {
-    return Array.prototype.concat(...array.map(callback));
-}
-
 export default class Stream {
     private options: CoreOptions;
     private ffmpegProcess: ChildProcessWithoutNullStreams;
@@ -39,7 +40,7 @@ export default class Stream {
     protected started = false;
 
     constructor(options: CoreOptions) {
-        if (!options.output.startsWith(`${options.outputProtocol}//`)) throw new Error("Invalid output url passed");
+        if (!options.output.startsWith(`${options.outputProtocol}://`)) throw new Error("Invalid output url passed");
 
         if (options.format == null) options.format = Format.FLV;
 
@@ -50,7 +51,18 @@ export default class Stream {
 
     start() {
         if (!this.started) {
+            let input;
+
+            if (Array.isArray(this.options.input)) {
+                const tmpFilePath = path.join(tempPath, `streamer${nanoid(4)}list`);
+                fs.writeFileSync(tmpFilePath, this.options.input.map(value => `file '${value}'`).join("\n"));
+
+                input = [ "-f", "concat", "-safe", "0", "-protocol_whitelist", "file,http,https,tcp,tsl,tls", "-i", tmpFilePath ];
+            } else input = [ "-i", this.options.input ];
+
             const args = [
+                "-re",
+                ...input,
                 "-preset",
                 this.options.preset,
                 "-c",
@@ -61,11 +73,6 @@ export default class Stream {
                 this.options.format,
                 this.options.key == null ? this.options.output : `${this.options.output}/${this.options.key}`
             ];
-
-            if (Array.isArray(this.options.input)) {
-                const inputs = flatMap(this.options.input as string[], e => [ "-i", e ]);
-                this.options.input.unshift(...inputs);
-            }
 
             this.ffmpegProcess = spawn(pathToFfmpeg, args);
 
