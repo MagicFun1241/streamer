@@ -1,6 +1,11 @@
 # Streamer
 Simple streaming library based on **FFMPEG**.
 
+## Install
+```bash
+npm i @magicfun1241/streamer --save
+```bash
+
 ## Examples
 Using TypeScript:
 ```typescript
